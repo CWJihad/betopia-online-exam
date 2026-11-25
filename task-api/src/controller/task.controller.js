@@ -1,11 +1,9 @@
-const express = require('express');
 const mongoose = require('mongoose');
 const Task = require('../models/task.model');
 
-const router = express.Router();
 const ALLOWED_STATUSES = ['pending', 'in-progress', 'done'];
 
-router.post('/tasks', async (req, res) => {
+const createTask = async (req, res) => {
   try {
     const { title, status, dueDate, userId } = req.body;
 
@@ -36,9 +34,9 @@ router.post('/tasks', async (req, res) => {
     }
     return res.status(500).json({ message: 'Server error' });
   }
-});
+}
 
-router.get('/tasks', async (req, res) => {
+const getTasks = async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
     const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
@@ -66,6 +64,6 @@ router.get('/tasks', async (req, res) => {
   } catch (err) {
     return res.status(500).json({ message: 'Server error' });
   }
-});
+}
 
-module.exports = router;
+module.exports = { createTask, getTasks };
